@@ -25,3 +25,6 @@ While installing some components, I deviated from the recommended installation m
 Despite successfully tackling various challenges, I encountered a roadblock when attempting to run the test cases using Gradle. The tests were not executing as expected, resulting in compilation failures. Despite my best efforts to debug the issue by reviewing Gradle configurations and test class setups, I was unable to find a solution within the given timeframe.
 
 These challenges underscored the importance of meticulous setup, code organization, and thorough testing in software development. While I was able to overcome several obstacles, unresolved issues with test case execution taught me the value of seeking help and collaborating with peers to find solutions.
+
+Made it work with docker in the end:
+[DockerRepo](https://hub.docker.com/repository/docker/danielnyvoll/dat250/general)
