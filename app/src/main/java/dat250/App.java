@@ -35,9 +35,9 @@ public class App {
             "</body>\n" +
             "</html>";
 
-    private static final double IN_TO_METER = 0.0254;
-    private static final double FT_TO_METER = 0.3048;
-    private static final double MI_TO_METER = 1609.344;
+    public static final double IN_TO_METER = 0.0254;
+    public static final double FT_TO_METER = 0.3048;
+    public static final double MI_TO_METER = 1609.344;
 
 
     public static void main(String[] args) {
@@ -49,34 +49,59 @@ public class App {
                     double value = Double.parseDouble(ctx.formParam("value"));
                     String fromUnit = ctx.formParam("sunit");
                     String toUnit = ctx.formParam("tunit");
-                    double inMeters;
-                    if (fromUnit.equals("in")) {
-                        inMeters = value * IN_TO_METER;
-                    } else if (fromUnit.equals("ft")) {
-                        inMeters = value * FT_TO_METER;
-                    } else if (fromUnit.equals("mi")) {
-                        inMeters = value * MI_TO_METER;
-                    } else if (fromUnit.equals("m")) {
-                        inMeters = value;
-                    } else {
-                        inMeters = Double.NaN;
-                    }
-                    double result;
-                    if (toUnit.equals("in")) {
-                        result = inMeters / IN_TO_METER;
-                    } else if (toUnit.equals("ft")) {
-                        result = inMeters / FT_TO_METER;
-                    } else if (toUnit.equals("mi")) {
-                        result = inMeters / MI_TO_METER;
-                    } else if (toUnit.equals("m")) {
-                        result = inMeters;
-                    } else {
-                        result = Double.NaN;
-                    }
+                    double result = convertUnits(fromUnit, toUnit, value);
                     ctx.result(Double.toString(result));
                 })
                 .start(9000);
     }
 
+    public static double convertUnits(String fromUnit, String toUnit, double value) {
+        double conversionFactor;
 
+        if (fromUnit.equals("in")) {
+            if (toUnit.equals("m")) {
+                conversionFactor = IN_TO_METER;
+            } else if (toUnit.equals("ft")) {
+                conversionFactor = IN_TO_METER / FT_TO_METER;
+            } else if (toUnit.equals("mi")) {
+                conversionFactor = IN_TO_METER / MI_TO_METER;
+            } else {
+                conversionFactor = 1.0; // Same unit, no conversion needed
+            }
+        } else if (fromUnit.equals("ft")) {
+            if (toUnit.equals("m")) {
+                conversionFactor = FT_TO_METER;
+            } else if (toUnit.equals("in")) {
+                conversionFactor = FT_TO_METER / IN_TO_METER;
+            } else if (toUnit.equals("mi")) {
+                conversionFactor = FT_TO_METER / MI_TO_METER;
+            } else {
+                conversionFactor = 1.0; // Same unit, no conversion needed
+            }
+        } else if (fromUnit.equals("mi")) {
+            if (toUnit.equals("m")) {
+                conversionFactor = MI_TO_METER;
+            } else if (toUnit.equals("in")) {
+                conversionFactor = MI_TO_METER / IN_TO_METER;
+            } else if (toUnit.equals("ft")) {
+                conversionFactor = MI_TO_METER / FT_TO_METER;
+            } else {
+                conversionFactor = 1.0; // Same unit, no conversion needed
+            }
+        } else if (fromUnit.equals("m")) {
+            if (toUnit.equals("in")) {
+                conversionFactor = 1.0 / IN_TO_METER;
+            } else if (toUnit.equals("ft")) {
+                conversionFactor = 1.0 / FT_TO_METER;
+            } else if (toUnit.equals("mi")) {
+                conversionFactor = 1.0 / MI_TO_METER;
+            } else {
+                conversionFactor = 1.0; // Same unit, no conversion needed
+            }
+        } else {
+            conversionFactor = Double.NaN; // Unknown unit, no conversion possible
+        }
+
+        return value * conversionFactor;
+    }
 }
