@@ -4,4 +4,4 @@
 
 # DAT250-Assignment02
 
-[GithubURL] (https://github.com/danielnyvoll/dat250-expass2)
+[GithubURL](https://github.com/danielnyvoll/dat250-expass2)
